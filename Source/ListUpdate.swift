@@ -11,7 +11,7 @@ import Foundation
 public struct ListUpdate {
   public var deletions = [IndexPath]()
   public var insertions = [IndexPath]()
-  public var updates = [IndexPath]()
+  public var updates = [(from: IndexPath, to: IndexPath)]()
   public var moves = [(from: IndexPath, to: IndexPath)]()
 
   public init(_ result: [Operation], _ section: Int) {
@@ -21,8 +21,8 @@ public struct ListUpdate {
         deletions.append(IndexPath(row: index, section: section))
       case .insert(let index):
         insertions.append(IndexPath(row: index, section: section))
-      case .update(let index):
-        updates.append(IndexPath(row: index, section: section))
+      case let .update(fromIndex, toIndex):
+        updates.append((from: IndexPath(row: fromIndex, section: section), to: IndexPath(row: toIndex, section: section)))
       case let .move(fromIndex, toIndex):
         moves.append((from: IndexPath(row: fromIndex, section: section), to: IndexPath(row: toIndex, section: section)))
       }

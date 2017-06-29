@@ -19,13 +19,13 @@ public enum Operation: Equatable {
   case insert(Int)
   case delete(Int)
   case move(Int, Int)
-  case update(Int)
+  case update(Int, Int)
 
   public static func ==(lhs: Operation, rhs: Operation) -> Bool {
     switch (lhs, rhs) {
     case let (.insert(l), .insert(r)),
-         let (.delete(l), .delete(r)),
-         let (.update(l), .update(r)): return l == r
+         let (.delete(l), .delete(r)): return l == r
+    case let (.update(l), .update(r)): return l == r
     case let (.move(l), .move(r)): return l == r
     default: return false
     }
@@ -170,7 +170,7 @@ public func diff<T: Collection>(_ old: T, _ new: T) -> [Operation] where T.Itera
     case let .index(oldIndex):
       // The object has changed, so it should be updated.
       if old[oldIndex] != new[index] {
-        steps.append(.update(index))
+        steps.append(.update(oldIndex, index))
       }
 
       let deleteOffset = deleteOffsets[oldIndex]

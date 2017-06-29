@@ -21,15 +21,17 @@ public extension UICollectionView {
     performBatchUpdates({
       self.deleteItems(at: update.deletions)
       self.insertItems(at: update.insertions)
+      if (update.updates.count > 0) {
+        var updateIndexPaths = [IndexPath]()
+        updateIndexPaths.reserveCapacity(update.updates.count)
+        for reload in update.updates {
+          updateIndexPaths.append(reload.from)
+        }
+        self.reloadItems(at: updateIndexPaths)
+      }
       for move in update.moves {
         self.moveItem(at: move.from, to: move.to)
       }
-    }, completion: nil)
-
-    // reloadItems is done separately as the update indexes returne by diff() are in respect to the
-    // "after" state, but the collectionView.reloadItems() call wants the "before" indexPaths.
-    performBatchUpdates({
-        self.reloadItems(at: update.updates)
     }, completion: completion)
   }
 }

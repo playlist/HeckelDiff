@@ -104,7 +104,7 @@ class DiffTests: XCTestCase {
       FakeItem(value: 2, eValue: 3)
     ]
     let result = diff(o, n)
-    XCTAssertEqual([.update(0), .update(1), .update(2)], result)
+    XCTAssertEqual([.update(0,0), .update(1,1), .update(2,2)], result)
   }
 
   func testDeletionLeadingToInsertionDeletionMoves() {
@@ -133,7 +133,7 @@ class DiffTests: XCTestCase {
       FakeItem(value: 0, eValue: 0)
     ]
     let result = orderedDiff(o, n)
-    XCTAssertEqual([.delete(2), .delete(0), .insert(0), .insert(2), .update(0)], result)
+    XCTAssertEqual([.delete(2), .delete(0), .insert(0), .insert(2), .update(2,0)], result)
   }
 
   func testDeletingEqualObjects() {
