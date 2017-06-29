@@ -19,19 +19,23 @@ public extension UICollectionView {
     let update = ListUpdate(diff(old, new), section)
 
     performBatchUpdates({
+      update.dumpUpdate()
       self.deleteItems(at: update.deletions)
       self.insertItems(at: update.insertions)
-      if (update.updates.count > 0) {
-        var updateIndexPaths = [IndexPath]()
-        updateIndexPaths.reserveCapacity(update.updates.count)
-        for reload in update.updates {
-          updateIndexPaths.append(reload.from)
-        }
-        self.reloadItems(at: updateIndexPaths)
-      }
       for move in update.moves {
         self.moveItem(at: move.from, to: move.to)
       }
-    }, completion: completion)
+    }, completion: {(finished: Bool) in
+      self.performBatchUpdates({
+        if (update.updates.count > 0) {
+          var updateIndexPaths = [IndexPath]()
+          updateIndexPaths.reserveCapacity(update.updates.count)
+          for reload in update.updates {
+            updateIndexPaths.append(reload.new)
+          }
+          self.reloadItems(at: updateIndexPaths)
+        }
+      }, completion: completion)
+    })
   }
 }

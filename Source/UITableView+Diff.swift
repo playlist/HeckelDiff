@@ -23,16 +23,19 @@ public extension UITableView {
 
     deleteRows(at: update.deletions, with: animation)
     insertRows(at: update.insertions, with: animation)
+    for move in update.moves {
+      moveRow(at: move.from, to: move.to)
+    }
+    endUpdates()
+
+    beginUpdates()
     if (update.updates.count > 0) {
       var updateIndexPaths = [IndexPath]()
       updateIndexPaths.reserveCapacity(update.updates.count)
       for reload in update.updates {
-        updateIndexPaths.append(reload.from)
+        updateIndexPaths.append(reload.new)
       }
       reloadRows(at: updateIndexPaths, with: animation)
-    }
-    for move in update.moves {
-      moveRow(at: move.from, to: move.to)
     }
     endUpdates()
   }
