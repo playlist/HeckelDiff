@@ -28,24 +28,4 @@ public struct ListUpdate {
       }
     }
   }
-
-  public func dumpUpdate() {
-    NSLog("LIVEJAM: Dumping update")
-    NSLog("LIVEJAM:   deletes:")
-    for delete in deletions {
-      NSLog("LIVEJAM:     - \(delete.item)")
-    }
-    NSLog("LIVEJAM:   insertions:")
-    for insert in insertions {
-      NSLog("LIVEJAM:     + \(insert.item)")
-    }
-    NSLog("LIVEJAM:   updates:")
-    for update in updates {
-      NSLog("LIVEJAM:     ~ oldIndex: \(update.old.item), newIndex: \(update.new.item)")
-    }
-    NSLog("LIVEJAM:   move:")
-    for move in moves {
-      NSLog("LIVEJAM:     . fromIndex: \(move.from.item), newIndex: \(move.to.item)")
-    }
-  }
 }

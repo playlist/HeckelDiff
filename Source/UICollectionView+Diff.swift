@@ -19,7 +19,6 @@ public extension UICollectionView {
     let update = ListUpdate(diff(old, new), section)
 
     performBatchUpdates({
-      update.dumpUpdate()
       self.deleteItems(at: update.deletions)
       self.insertItems(at: update.insertions)
       for move in update.moves {
